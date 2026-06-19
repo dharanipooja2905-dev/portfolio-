@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dharani Pooja - Digital Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #9C7A29;
+            --dark: #1A1A1A;
+            --light: #F5F5F5;
+            --muted: #5A5A5A;
+            --border: #D9D2BE;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            background: #FFFFFF;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--dark) 0%, #2a2a2a 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-bottom: 3px solid var(--gold);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        header .subtitle {
+            color: #ccc;
+            font-size: 0.95rem;
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--light);
+            padding: 1.5rem 2rem;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            color: var(--muted);
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        nav button:hover {
+            color: var(--gold);
+            border-bottom-color: var(--gold);
+        }
+
+        nav button.active {
+            color: var(--dark);
+            border-bottom-color: var(--gold);
+        }
+
+        /* Main Content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            border-bottom: 3px solid var(--gold);
+            padding-bottom: 1rem;
+        }
+
+        .section > p {
+            color: var(--muted);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        /* Project Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: white;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--gold);
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .project-card-content {
+            padding: 1.5rem;
+        }
+
+        .project-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .project-card p {
+            font-size: 0.95rem;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .project-tags {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--gold);
+            color: white;
+            padding: 0.35rem 0.75rem;
+            font-size: 0.8rem;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 800px;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-image {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+        }
+
+        .modal-info {
+            padding: 2rem;
+        }
+
+        .modal-info h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            border: none;
+            padding: 0;
+        }
+
+        .modal-info p {
+            color: var(--muted);
+            margin-bottom: 1rem;
+            line-height: 1.8;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: var(--gold);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+
+        .modal-close:hover {
+            background: var(--dark);
+        }
+
+        /* About Section */
+        .about-content {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--gold);
+        }
+
+        .about-content h3 {
+            color: var(--dark);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .about-content ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .about-content li {
+            padding: 0.5rem 0;
+            color: var(--muted);
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .about-content li:before {
+            content: "▪";
+            color: var(--gold);
+            position: absolute;
+            left: 0;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 3px solid var(--gold);
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        footer a {
+            color: var(--gold);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            nav {
+                gap: 1rem;
+            }
+
+            nav button {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            main {
+                padding: 2rem 1rem;
+            }
+
+            .modal-content {
+                max-width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>DHARANI POOJA</h1>
+        <p>Website Developer | Digital Marketing Specialist | Content Creator</p>
+        <p class="subtitle">Creative design & strategic marketing across fashion, real estate, media & events</p>
+    </header>
+
+    <nav>
+        <button class="nav-btn active" data-section="all">All Projects</button>
+        <button class="nav-btn" data-section="real-estate">Real Estate</button>
+        <button class="nav-btn" data-section="fashion">Fashion & Branding</button>
+        <button class="nav-btn" data-section="events">Events & Design</button>
+        <button class="nav-btn" data-section="content">Content & Campaigns</button>
+        <button class="nav-btn" data-section="about">About</button>
+    </nav>
+
+    <main>
+        <!-- All Projects -->
+        <section class="section active" id="all">
+            <h2>All Projects</h2>
+            <p>A curated selection of digital marketing, web design, and creative work across diverse industries.</p>
+            <div class="projects-grid" id="all-grid"></div>
+        </section>
+
+        <!-- Real Estate -->
+        <section class="section" id="real-estate">
+            <h2>Real Estate Marketing</h2>
+            <p>High-impact digital marketing campaigns for Prime Edge Realtors, featuring compelling visuals and strategic messaging to drive property sales and brand awareness.</p>
+            <div class="projects-grid" id="real-estate-grid"></div>
+        </section>
+
+        <!-- Fashion & Branding -->
+        <section class="section" id="fashion">
+            <h2>Fashion & Luxury Branding</h2>
+            <p>Elegant branding solutions for high-end fashion brands, including logo design, brand identity, and digital presence development.</p>
+            <div class="projects-grid" id="fashion-grid"></div>
+        </section>
+
+        <!-- Events & Design -->
+        <section class="section" id="events">
+            <h2>Events & Special Designs</h2>
+            <p>Professional event designs including invitations, corporate celebrations, and commemorative materials with premium aesthetics.</p>
+            <div class="projects-grid" id="events-grid"></div>
+        </section>
+
+        <!-- Content & Campaigns -->
+        <section class="section" id="content">
+            <h2>Content & Marketing Campaigns</h2>
+            <p>Strategic digital content creation, social media campaigns, and promotional materials designed to engage audiences and drive business growth.</p>
+            <div class="projects-grid" id="content-grid"></div>
+        </section>
+
+        <!-- About -->
+        <section class="section" id="about">
+            <h2>About Me</h2>
+            <p>I'm a creative digital professional specializing in website development, digital marketing, and content creation. With experience across fashion, real estate, media, education, and creative industries, I help businesses establish a strong digital presence and execute compelling marketing strategies.</p>
+            
+            <div class="about-content">
+                <h3>Core Expertise</h3>
+                <ul>
+                    <li>Website Design & Development (WordPress, Shopify)</li>
+                    <li>Digital Marketing & SEO Optimization</li>
+                    <li>Social Media Management & Meta Ads</li>
+                    <li>Content Writing & Copywriting</li>
+                    <li>Graphic Design & Branding</li>
+                    <li>Video Content & Presentation</li>
+                </ul>
+
+                <h3>Tools & Technologies</h3>
+                <ul>
+                    <li>Canva, Figma, Meta Business Suite</li>
+                    <li>Google Analytics, Search Console</li>
+                    <li>Microsoft Office Suite</li>
+                    <li>WordPress, Shopify, Hostinger</li>
+                </ul>
+
+                <h3>Experience</h3>
+                <p style="color: var(--muted); padding-left: 0; margin-top: 1rem;">
+                    <strong>Freelance Web Developer & Digital Marketer</strong> (2021–Present)<br>
+                    Designed and launched websites for multiple clients across various industries. Managed complete digital marketing campaigns including SEO, social media, and paid advertising. Created branding solutions and marketing materials for startups and growing businesses.<br><br>
+                    <strong>Process Associate</strong> at Sutherland Global Services Pvt Ltd (2024–Present)<br>
+                    Customer support and process management with focus on operational excellence and client satisfaction.
+                </p>
+
+                <h3>Education</h3>
+                <p style="color: var(--muted); padding-left: 0;">
+                    Bachelor of Engineering in Biomedical Engineering<br>
+                    Dhanalakshmi Srinivasan Institute of Technology
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p><strong>DHARANI POOJA</strong></p>
+        <p>📞 +91 99764 75237 | 📧 <a href="mailto:dharanipooja2905@gmail.com">dharanipooja2905@gmail.com</a></p>
+        <p>📍 Kerala, India | <a href="#">LinkedIn</a></p>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <img id="modal-image" class="modal-image" src="" alt="">
+            <div class="modal-info">
+                <h2 id="modal-title"></h2>
+                <p id="modal-desc"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const projects = [
+            {
+                id: 1,
+                title: "Prime Edge Realtors - Campaign 1",
+                category: "real-estate",
+                image: "IMG-20260319-WA0045.jpg",
+                description: "Strategic real estate marketing campaign featuring luxury properties and comprehensive digital presence development for Prime Edge Realtors. Includes compelling visuals of premium residential projects with professional copywriting."
+            },
+            {
+                id: 2,
+                title: "Prime Edge Realtors - Campaign 2",
+                category: "real-estate",
+                image: "IMG-20260319-WA0009.jpg",
+                description: "High-impact promotional design showcasing premium real estate properties with professional branding and clear call-to-action messaging. Features property highlights and investment opportunities targeting discerning buyers."
+            },
+            {
+                id: 3,
+                title: "The Digital Shift - Women's Day Campaign",
+                category: "content",
+                image: "IMG-20260308-WA0000.jpg",
+                description: "Creative Women's Day social media campaign for The Digital Shift, promoting digital growth and empowerment. Features elegant design with community engagement and brand messaging."
+            },
+            {
+                id: 4,
+                title: "Sutherland - Iftar Evening Event",
+                category: "events",
+                image: "IMG-20260318-WA0009.jpg",
+                description: "Premium event poster design for corporate Iftar celebration at Sutherland Global Services. Luxurious gold and black aesthetic with elegant typography and festive imagery. Professional event promotion material."
+            },
+            {
+                id: 5,
+                title: "Wedding Celebration Design",
+                category: "events",
+                image: "IMG-20260429-WA0020.jpg",
+                description: "Elegant wedding invitation design featuring couple portraits, detailed event information, and premium floral embellishments. Professional wedding stationery with sophisticated typography and layout."
+            },
+            {
+                id: 6,
+                title: "Content Creator Collaboration",
+                category: "content",
+                image: "IMG-20251028-WA0088.jpg",
+                description: "Social media content featuring collaboration opportunities, PR packages, and influencer engagement. Demonstrates content creator branding and professional presentation to audiences."
+            },
+            {
+                id: 7,
+                title: "St Mary's @ 80 Event Poster",
+                category: "events",
+                image: "file_00000000437c7207858a783c7e19363d.png",
+                description: "Professional anniversary event poster for educational institution featuring biotechnology theme. Combines institutional branding with modern design elements and event details."
+            },
+            {
+                id: 8,
+                title: "Nayora Vollet - Luxury Fashion Brand",
+                category: "fashion",
+                image: "file_000000002fcc7209bb7c98380b9636f7.png",
+                description: "Premium branding for luxury fashion brand Nayora Vollet. Features sophisticated gold and burgundy color palette with elegant logo design and brand identity materials. 'Timeless Elegance' positioning."
+            },
+            {
+                id: 9,
+                title: "Red Lens - Grand Opening Invitation",
+                category: "events",
+                image: "file_00000000e3ec71f59b93c01e9a4b6741.png",
+                description: "Luxurious grand opening ceremony invitation for Red Lens Marketing & Productions. Premium design with ornate gold borders, elegant typography, and event details. Professional event marketing material."
+            },
+            {
+                id: 10,
+                title: "Red Lens - Eid Mubarak Greeting",
+                category: "content",
+                image: "IMG_20260528_131735_208.webp",
+                description: "Culturally-sensitive Eid greeting campaign for Red Lens Marketing featuring Arabic calligraphy, traditional imagery, and warm messaging. Social media content for festive celebration."
+            },
+            {
+                id: 11,
+                title: "Red Lens - Brand Logo",
+                category: "fashion",
+                image: "IMG-20260506-WA0007.jpg",
+                description: "Premium brand logo design for Red Lens Marketing & Productions. Ornate gold and silver lettering with elegant scrollwork and professional branding elements. High-end creative studio identity."
+            }
+        ];
+
+        const uploadPath = "/mnt/user-data/uploads/";
+
+        function renderProjects(filter = "all") {
+            const filteredProjects = filter === "all" ? projects : projects.filter(p => p.category === filter);
+            
+            const grids = document.querySelectorAll(".projects-grid");
+            grids.forEach(grid => grid.innerHTML = "");
+
+            filteredProjects.forEach(project => {
+                const card = document.createElement("div");
+                card.className = "project-card";
+                card.onclick = () => openModal(project);
+                
+                card.innerHTML = `
+                    <img src="${uploadPath}${project.image}" alt="${project.title}" loading="lazy">
+                    <div class="project-card-content">
+                        <h3>${project.title}</h3>
+                        <p>${project.description.substring(0, 100)}...</p>
+                        <div class="project-tags">
+                            <span class="tag">${project.category.replace("-", " ")}</span>
+                        </div>
+                    </div>
+                `;
+
+                if (filter === "all") {
+                    document.getElementById("all-grid").appendChild(card);
+                } else {
+                    document.getElementById(`${filter}-grid`).appendChild(card);
+                }
+            });
+
+            if (filter !== "all") {
+                const categoryGrid = document.getElementById(`${filter}-grid`);
+                if (categoryGrid.innerHTML === "") {
+                    categoryGrid.innerHTML = "<p>No projects in this category.</p>";
+                }
+            }
+        }
+
+        function openModal(project) {
+            document.getElementById("modal-image").src = uploadPath + project.image;
+            document.getElementById("modal-title").textContent = project.title;
+            document.getElementById("modal-desc").textContent = project.description;
+            document.getElementById("modal").classList.add("active");
+        }
+
+        function closeModal() {
+            document.getElementById("modal").classList.remove("active");
+        }
+
+        document.querySelectorAll(".nav-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                const section = e.target.dataset.section;
+                
+                document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+                e.target.classList.add("active");
+
+                document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+                document.getElementById(section).classList.add("active");
+
+                if (section !== "about") {
+                    renderProjects(section);
+                }
+            });
+        });
+
+        document.getElementById("modal").addEventListener("click", (e) => {
+            if (e.target.id === "modal") closeModal();
+        });
+
+        renderProjects();
+    </script>
+</body>
+</html>
